@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Register.css";
+import axios from "axios";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
@@ -13,6 +14,7 @@ const EMAIL_REGEX =
 
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%*]).{8,24}$/;
+const REGISTER_URL = "/api/v1/auth/register";
 
 export default function Register() {
   const nameRef = useRef();
@@ -42,22 +44,16 @@ export default function Register() {
 
   useEffect(() => {
     const result = USER_REGEX.test(name);
-    console.log(result);
-    console.log(name);
     setValidName(result);
   }, [name]);
 
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
-    console.log(result);
-    console.log(email);
     setValidEmail(result);
   }, [email]);
 
   useEffect(() => {
     const result = PASSWORD_REGEX.test(password);
-    console.log(result);
-    console.log(password);
     setValidPassword(result);
     const match = password === matchPassword;
     setValidMatch(match);
@@ -67,6 +63,37 @@ export default function Register() {
     setErrMessage("");
   }, [name, email, password, matchPassword]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let dto = {
+      name: name,
+      email: email,
+      password: password,
+      userType: "COUNTRY",
+    };
+    console.log(dto);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080" + REGISTER_URL,
+        dto,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          withCredentials: false,
+        }
+      );
+      console.log(response.data);
+      console.log(JSON.stringify(response));
+      //clear the input fields and show some message
+    } catch (err) {
+      if (!err?.response) {
+        setErrMessage("No server response");
+      }
+      errRef.current.focus();
+    }
+  };
   return (
     <section>
       <p
@@ -77,7 +104,7 @@ export default function Register() {
         {errMessage}
       </p>
       <h1>Register</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">
             Name:
@@ -160,7 +187,7 @@ export default function Register() {
         <div>
           <label htmlFor="confirm_password">
             Confirm password:
-            <span className={validMatch ? "valid" : "hide"}>
+            <span className={validMatch && matchPassword ? "valid" : "hide"}>
               <FontAwesomeIcon icon={faCheck} />
             </span>
             <span className={validMatch || !matchPassword ? "hide" : "invalid"}>
@@ -174,8 +201,8 @@ export default function Register() {
             required
             aria-invalid={validMatch ? "false" : "true"}
             aria-describedby="confirmnote"
-            onFocus={() => setMatchPassword(true)}
-            onBlur={() => setMatchPassword(false)}
+            onFocus={() => setMatchPasswordFocus(true)}
+            onBlur={() => setMatchPasswordFocus(false)}
           />
           <p
             id="confirmnote"
@@ -190,6 +217,7 @@ export default function Register() {
         </div>
 
         <button
+          type="submit"
           disabled={
             !validName || !validEmail || !validPassword || !validMatch
               ? true
