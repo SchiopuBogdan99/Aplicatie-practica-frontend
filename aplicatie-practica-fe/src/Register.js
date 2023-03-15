@@ -231,8 +231,7 @@ export default function Register() {
         Already registered?
         <br />
         <span className="line">
-          {/*put router link here*/}
-          <a href="#">Sign in</a>
+          <a href="/login">Sign in</a>
         </span>
       </p>
     </section>
