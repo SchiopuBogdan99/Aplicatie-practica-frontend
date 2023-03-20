@@ -6,7 +6,8 @@ import Register from "./Register";
 import Missing from "./components/Missing";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./components/Unauthorized";
-import Demo from "./Demo";
+
+import UserPage from "./components/UserPage";
 import AdminPage from "./components/AdminPage";
 import ConfigCountries from "./components/ConfigCountries";
 import ConfigUsers from "./components/ConfigUsers";
@@ -18,8 +19,11 @@ function App() {
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="unauthorized" element={<Unauthorized />} />
-      <Route path="demo" element={<Demo />} />
+
       {/* protected routes */}
+      <Route element={<RequireAuth allowedRoles={["COUNTRY", "REGION"]} />}>
+        <Route path="user" element={<UserPage />} />
+      </Route>
       <Route element={<RequireAuth allowedRoles={["ADMINISTRATOR"]} />}>
         <Route path="admin" element={<AdminPage />} />
       </Route>

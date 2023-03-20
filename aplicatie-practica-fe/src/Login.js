@@ -51,13 +51,14 @@ export default function Login() {
       console.log("Role:" + role);
       console.log("Token:" + accessToken);
       localStorage.setItem("user_name", name);
+      localStorage.setItem("role", role);
       setAuth({ email, password, accessToken, role });
       setEmail("");
       setPassword("");
       if (role === "ADMINISTRATOR") {
         navigate("/admin");
       } else {
-        navigate("/demo");
+        navigate("/user");
       }
     } catch (err) {
       console.error(err);
