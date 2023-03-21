@@ -42,8 +42,6 @@ export default function Login() {
           withCredentials: false,
         }
       );
-      console.log(response.data);
-      console.log(JSON.stringify(response));
       const accessToken = response?.data?.token;
       const role = response?.data?.role;
       const name = response?.data.name;
@@ -53,6 +51,7 @@ export default function Login() {
       localStorage.setItem("user_name", name);
       localStorage.setItem("role", role);
       setAuth({ email, password, accessToken, role });
+      localStorage.setItem("email", email);
       setEmail("");
       setPassword("");
       if (role === "ADMINISTRATOR") {

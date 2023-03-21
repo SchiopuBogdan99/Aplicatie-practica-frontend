@@ -207,15 +207,17 @@ export default function ConfigUsers() {
             placeholder="Password"
             onChange={handleFormChange}
           />
-          <Dropdown
-            name="userType"
-            placeholder="Select role"
-            fluid
-            selection
-            options={dropdownOptions}
-            value={formData.userType}
-            onChange={onChangeDropdown}
-          />
+          <div className="sasuasu">
+            <Dropdown
+              name="userType"
+              placeholder="Select role"
+              fluid
+              selection
+              options={dropdownOptions}
+              value={formData.userType}
+              onChange={onChangeDropdown}
+            />
+          </div>
           <button type="submit">Add</button>
         </form>
       </div>

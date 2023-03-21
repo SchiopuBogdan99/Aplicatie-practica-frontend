@@ -1,11 +1,21 @@
 import "./AdminHeader.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 export default function AdminHeader({ name, initials, text }) {
   const navigate = useNavigate();
   let subMenu = document.getElementById("subMenu");
   function toggleMenu() {
     subMenu.classList.toggle("open-menu");
   }
+  const handleLogout = () => {
+    try {
+      axios.options("/api/v1/auth/logout").then((response) => {
+        navigate("/login");
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="header">
@@ -42,7 +52,7 @@ export default function AdminHeader({ name, initials, text }) {
               <p>Config tari</p>
               <span>{">"}</span>
             </a>
-            <a href="#" className="sub-menu-link">
+            <a href="#" className="sub-menu-link" onClick={handleLogout}>
               <p>Logout</p>
               <span>{">"}</span>
             </a>

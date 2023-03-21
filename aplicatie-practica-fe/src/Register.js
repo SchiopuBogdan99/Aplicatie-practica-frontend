@@ -71,7 +71,6 @@ export default function Register() {
       password: password,
       userType: "COUNTRY",
     };
-    console.log(dto);
     try {
       const response = await axios.post(
         "http://localhost:8080" + REGISTER_URL,
@@ -84,8 +83,6 @@ export default function Register() {
           withCredentials: false,
         }
       );
-      console.log(response.data);
-      console.log(JSON.stringify(response));
       //clear the input fields and show some message
     } catch (err) {
       if (!err?.response) {

@@ -11,7 +11,6 @@ export default function ConfigCountries() {
   const [countries, setCountries] = useState([]);
   const [initials, setInitials] = useState("");
   const [formData, setFormData] = useState({ code: "", name: "" });
-  const [images, setImages] = useState([]);
 
   const getInitials = () => {
     var names = name.split(" ");
@@ -27,14 +26,6 @@ export default function ConfigCountries() {
     if (name) {
       setName(name);
     }
-    // try {
-    //   axiosPrivate.get("/api/v1/country").then((response) => {
-    //     console.log(response.data);
-    //     setCountries(response.data);
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    // }
   }, []);
 
   useEffect(() => {
@@ -44,7 +35,6 @@ export default function ConfigCountries() {
   useEffect(() => {
     try {
       axiosPrivate.get("/api/v1/country").then((response) => {
-        console.log(response.data);
         setCountries(response.data);
       });
     } catch (err) {
@@ -55,8 +45,6 @@ export default function ConfigCountries() {
   useEffect(() => {
     try {
       axiosPrivate.get("/api/v1/country").then((response) => {
-        console.log(response.data);
-        // response.data.map((el) => {return {...el, image: }})
         setCountries(response.data);
       });
     } catch (err) {
@@ -118,7 +106,6 @@ export default function ConfigCountries() {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
-          console.log(response.data);
           let imgId = response.data;
           try {
             let dto = {
@@ -128,7 +115,6 @@ export default function ConfigCountries() {
             axiosPrivate
               .put("/api/v1/country/add-image", dto)
               .then((response) => {
-                console.log(response.data);
                 setAddImage(!addImage);
               });
           } catch (err) {

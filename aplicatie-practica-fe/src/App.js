@@ -6,7 +6,6 @@ import Register from "./Register";
 import Missing from "./components/Missing";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./components/Unauthorized";
-
 import UserPage from "./components/UserPage";
 import AdminPage from "./components/AdminPage";
 import ConfigCountries from "./components/ConfigCountries";
