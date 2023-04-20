@@ -1,6 +1,8 @@
 import "./AdminHeader.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 export default function AdminHeader({ name, initials, text }) {
   const navigate = useNavigate();
   let subMenu = document.getElementById("subMenu");
@@ -10,6 +12,7 @@ export default function AdminHeader({ name, initials, text }) {
   const handleLogout = () => {
     try {
       axios.options("/api/v1/auth/logout").then((response) => {
+        Cookies.remove("token");
         navigate("/login");
       });
     } catch (err) {

@@ -10,6 +10,7 @@ import UserPage from "./components/UserPage";
 import AdminPage from "./components/AdminPage";
 import ConfigCountries from "./components/ConfigCountries";
 import ConfigUsers from "./components/ConfigUsers";
+import "./App.css";
 function App() {
   return (
     <Routes>

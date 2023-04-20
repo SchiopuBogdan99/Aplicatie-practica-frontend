@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import "./ConfigCountries.css";
 import { Dropdown } from "semantic-ui-react";
+import Tile from "./Tile";
 
 export default function ConfigUsers() {
   const dropdownOptions = [
@@ -140,9 +141,9 @@ export default function ConfigUsers() {
     if (user.userType === "ADMINISTRATOR") {
       alert("Administrators cannot have countries");
     } else if (user.userType === "COUNTRY" && user.countries.length === 1) {
-      alert("User already have a country assigned");
+      alert("User of type COUNTRY already have a country assigned");
     } else if (user.userType === "REGION" && exists) {
-      alert("User already has this country");
+      alert("User of type REGION already has this country assigned");
     } else {
       let dto = {
         idUser: addCountryFormData.idUser,
@@ -155,6 +156,20 @@ export default function ConfigUsers() {
       } catch (err) {
         console.error(err);
       }
+    }
+  };
+  const handleRemove = (countryId, userId) => {
+    console.log(countryId, userId);
+    let dto = {
+      idUser: userId,
+      idCountry: countryId,
+    };
+    try {
+      axiosPrivate.post("/api/v1/user/remove-country", dto).then((response) => {
+        alert("Country removed");
+      });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -170,16 +185,35 @@ export default function ConfigUsers() {
               <th>Email</th>
               <th>Role</th>
               <th>Country/Countries</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, key) => (
-              <tr key={key}>
+              <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.userType}</td>
-                <td>{user.countries.map((country) => `${country?.name} `)}</td>
+                <td>
+                  {user.countries.map((country) => (
+                    <Tile
+                      key={country.id}
+                      handleRemove={handleRemove}
+                      countryId={country.id}
+                      userId={user.id}
+                    >
+                      {country?.name}
+                    </Tile>
+                  ))}
+                </td>
+                <td>
+                  <button className="user-action-button">Delete</button>
+
+                  <button className="user-action-button">
+                    Remove last added country
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

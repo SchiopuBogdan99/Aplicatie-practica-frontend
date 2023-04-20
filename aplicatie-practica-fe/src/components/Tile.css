@@ -1,0 +1,11 @@
+.tile {
+  background-color: RGB(252, 252, 252);
+  border: 2px solid grey;
+  margin-top: 5px;
+}
+.remove-button {
+  margin-left: 5px;
+}
+.remove-button:hover {
+  background-color: red;
+}

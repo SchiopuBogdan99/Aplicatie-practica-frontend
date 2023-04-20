@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { axiosPrivate } from "../axios";
 import UserHeader from "./UserHeader";
+import SingleCard from "./SingleCard";
+import { details } from "./CountryDetails";
 
 export default function UserPage() {
   const [user, setUser] = useState({
@@ -8,6 +10,7 @@ export default function UserPage() {
     role: "",
   });
   const [countries, setCountries] = useState([]);
+  const [countriesDetailed, setCountriesDetailed] = useState([]);
 
   useEffect(() => {
     const name = localStorage.getItem("user_name");
@@ -30,6 +33,25 @@ export default function UserPage() {
       console.error(err);
     }
   }, []);
+
+  useEffect(() => {
+    if (countries.length !== 0) {
+      const mergedArray = countries.map((country) => {
+        const country2 = details.find(
+          (country2) => country2.name === country.name
+        );
+
+        if (country2 !== undefined) {
+          return { ...country, description: country2.description };
+        } else {
+          return { ...country, description: "No description available" };
+        }
+      });
+      console.log(mergedArray);
+      setCountriesDetailed(mergedArray);
+    }
+  }, [countries]);
+
   return (
     <div>
       <UserHeader
@@ -46,7 +68,7 @@ export default function UserPage() {
             </tr>
           </thead>
           <tbody>
-            {countries.map((country, key) => (
+            {countriesDetailed.map((country, key) => (
               <tr key={key}>
                 <td>{country.code}</td>
                 <td>{country.name}</td>
@@ -64,11 +86,21 @@ export default function UserPage() {
                   </td>
                 )}
 
-                <td>The best country</td>
+                <td>{country.description}</td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="card-grid">
+        {countriesDetailed.map((country) => (
+          <SingleCard
+            key={country.id}
+            name={country.name}
+            img={country?.imageId}
+            details={country.description}
+          />
+        ))}
       </div>
     </div>
   );

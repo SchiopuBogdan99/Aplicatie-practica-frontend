@@ -3,6 +3,7 @@ import useAuth from "./hooks/useAuth";
 import axios from "axios";
 import "./Login.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const LOGIN_URL = "/api/v1/auth/authenticate";
 export default function Login() {
@@ -42,6 +43,7 @@ export default function Login() {
           withCredentials: false,
         }
       );
+      Cookies.set("token", response.data.token, { expires: 7 });
       const accessToken = response?.data?.token;
       const role = response?.data?.role;
       const name = response?.data.name;
